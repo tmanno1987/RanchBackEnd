@@ -9,9 +9,9 @@ import com.ranch.model.Tasks;
 import com.ranch.model.enums.TaskType;
 
 public interface TaskRepo extends JpaRepository<Tasks, Long> {
-	Page<Tasks> findByTasksId(@RequestParam(name="task_id") long id, Pageable pageable);
+	Page<Tasks> findByTid(@RequestParam(name="tid") long id, Pageable pageable);
 	
-	Page<Tasks> findByTasksName(@RequestParam(name="name") String name, Pageable pageable);
+	Page<Tasks> findByName(@RequestParam(name="name") String name, Pageable pageable);
 	
-	Page<Tasks> findByTasksType(@RequestParam(name="task_type") TaskType taskType, Pageable pageable);
+	Page<Tasks> findByTaskType(@RequestParam(name="taskType") TaskType taskType, Pageable pageable);
 }

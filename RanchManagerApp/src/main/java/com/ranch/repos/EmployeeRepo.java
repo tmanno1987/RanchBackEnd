@@ -14,12 +14,12 @@ import com.ranch.model.Users;
 @CrossOrigin()
 @Repository()
 public interface EmployeeRepo extends JpaRepository<Users, Long> {
-	Page<Users> findByUserId(@RequestParam("id") Long id, Pageable pageable);
+	Page<Users> findById(@RequestParam("id") Long id, Pageable pageable);
 	
-	Page<Users> findByUsernameContaining(@RequestParam("username") String user, Pageable pageable);
+	Page<Users> findByUserContaining(@RequestParam("user") String user, Pageable pageable);
 	
 	// used for the security section
-	Boolean existsByUsername(String username);
+	Boolean existsByUser(String username);
 	Boolean existsByEmail(String email);
-	Optional<Users> findByUsername(String username);
+	Optional<Users> findByUser(String username);
 }

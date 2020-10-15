@@ -10,6 +10,6 @@ import com.ranch.model.Order;
 
 @CrossOrigin()
 public interface OrderRepo extends JpaRepository<Order, Long> {
-	Page<Order> findByOrderId(@RequestParam long id, Pageable pageable);
+	Page<Order> findByOid(@RequestParam(name="oid") long oid, Pageable pageable);
 	
 }

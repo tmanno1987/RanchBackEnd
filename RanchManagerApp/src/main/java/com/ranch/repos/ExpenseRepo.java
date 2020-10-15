@@ -12,5 +12,5 @@ import com.ranch.model.Expense;
 public interface ExpenseRepo extends JpaRepository<Expense, Long> {
 	Page<Expense> findByAmount(@RequestParam double amount, Pageable pageable);
 	
-	Page<Expense> findById(@RequestParam long id, Pageable pageable);
+	Page<Expense> findByEid(@RequestParam long eid, Pageable pageable);
 }
