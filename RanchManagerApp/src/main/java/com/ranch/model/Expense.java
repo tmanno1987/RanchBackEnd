@@ -12,13 +12,8 @@ import javax.validation.constraints.NotBlank;
 
 import com.ranch.model.enums.ExpenseType;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Entity
 @Table(name="Expense")
-@Getter
-@Setter
 public class Expense {
 	@Id @Column(name="exp_id") @NotBlank
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,28 +30,110 @@ public class Expense {
 	@Column(name="amount")
 	@NotBlank
 	private double amount;
-
-	/**
-	 * @param eid
-	 * @param item
-	 * @param expType
-	 * @param amount
-	 */
-	public Expense(@NotBlank long eid, @NotBlank String item, ExpenseType expType, @NotBlank double amount) {
+	
+	@Column(name="Note")
+	private String note;
+	
+	/*****************************
+	 * Constructor Instantiation *
+	 *****************************/
+	
+	// default constructor
+	public Expense() { super(); }
+	
+	// overloaded without expense id
+	public Expense(@NotBlank String item, ExpenseType expType, @NotBlank double amount, String note) {
+		this.item = item;
+		this.expType = expType;
+		this.amount = amount;
+		this.note = note;
+	}
+	
+	// overloaded constructor
+	public Expense(@NotBlank long eid, @NotBlank String item, ExpenseType expType, @NotBlank double amount,
+			String note) {
 		this.eid = eid;
 		this.item = item;
 		this.expType = expType;
 		this.amount = amount;
+		this.note = note;
+	}
+	
+		/****************
+		 * Getter Setup *
+		 ****************/
+
+	/**
+	 * @return the eid
+	 */
+	public long getEid() {
+		return eid;
 	}
 
 	/**
-	 * @param item
-	 * @param expType
-	 * @param amount
+	 * @return the item
 	 */
-	public Expense(@NotBlank String item, ExpenseType expType, @NotBlank double amount) {
+	public String getItem() {
+		return item;
+	}
+
+	/**
+	 * @return the expType
+	 */
+	public ExpenseType getExpType() {
+		return expType;
+	}
+
+	/**
+	 * @return the amount
+	 */
+	public double getAmount() {
+		return amount;
+	}
+
+	/**
+	 * @return the note
+	 */
+	public String getNote() {
+		return note;
+	}
+	
+	/****************
+	 * Setter Setup *
+	 ****************/
+
+	/**
+	 * @param eid the eid to set
+	 */
+	public void setEid(long eid) {
+		this.eid = eid;
+	}
+
+	/**
+	 * @param item the item to set
+	 */
+	public void setItem(String item) {
 		this.item = item;
+	}
+
+	/**
+	 * @param expType the expType to set
+	 */
+	public void setExpType(ExpenseType expType) {
 		this.expType = expType;
+	}
+
+	/**
+	 * @param amount the amount to set
+	 */
+	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	/**
+	 * @param note the note to set
+	 */
+	public void setNote(String note) {
+		this.note = note;
 	}
 }

@@ -5,12 +5,14 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ranch.model.Users;
 
 @CrossOrigin()
+@Repository()
 public interface EmployeeRepo extends JpaRepository<Users, Long> {
 	Page<Users> findByUserId(@RequestParam("id") Long id, Pageable pageable);
 	

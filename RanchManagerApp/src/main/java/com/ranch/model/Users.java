@@ -2,6 +2,7 @@ package com.ranch.model;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.persistence.UniqueConstraint;
@@ -34,7 +36,6 @@ public class Users implements Serializable {
 	private static final long serialVersionUID = 101L;
 
 	@Id @Column(name="user_id", nullable=false)
-	@NotBlank
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private long id;
 	
@@ -75,10 +76,6 @@ public class Users implements Serializable {
 	@NotBlank @Size(min=10, max=13)
 	private String phone;
 	
-	@Column(name="ssn", nullable=false)
-	@NotBlank @Size(min=9, max=11)
-	private String socialSecurityNumber;
-	
 	@Column(name="address", nullable=false)
 	@NotBlank
 	private String addr;
@@ -104,13 +101,18 @@ public class Users implements Serializable {
 	@JoinTable(name="user_positions", joinColumns= @JoinColumn(name="id"), inverseJoinColumns= @JoinColumn(name="role_id"))
 	private Set<Roles> roles = new HashSet<>();
 	
-	public Users() {}
+	@OneToMany(orphanRemoval=true, mappedBy="user", fetch=FetchType.LAZY)
+	private List<Order> orders;
 	
+	// default constructor
+	public Users() { super(); }
+
 	/**
 	 * @param user
 	 * @param pass
 	 * @param firstName
 	 * @param lastName
+	 * @param pos
 	 * @param salary
 	 * @param email
 	 * @param phone
@@ -120,7 +122,7 @@ public class Users implements Serializable {
 	 * @param zip
 	 */
 	public Users(@NotBlank @Size(min = 6, max = 40) String user, @NotBlank @Size(min = 6, max = 40) String pass,
-			@NotBlank String firstName, @NotBlank String lastName,
+			@NotBlank String firstName, @NotBlank String lastName, @NotBlank Position pos,
 			@NotBlank @Digits(integer = 10, fraction = 2) double salary, @Email @NotBlank String email,
 			@NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr, @NotBlank String city,
 			@NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip) {
@@ -128,6 +130,7 @@ public class Users implements Serializable {
 		this.pass = pass;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.pos = pos;
 		this.salary = salary;
 		this.email = email;
 		this.phone = phone;
@@ -136,214 +139,87 @@ public class Users implements Serializable {
 		this.state = state;
 		this.zip = zip;
 	}
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
 
 	/**
-	 * @param id the id to set
+	 * @param user
+	 * @param pass
+	 * @param firstName
+	 * @param lastName
+	 * @param pos
+	 * @param salary
+	 * @param email
+	 * @param phone
+	 * @param addr
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param taskSet
+	 * @param roles
+	 * @param orders
 	 */
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the user
-	 */
-	public String getUser() {
-		return user;
-	}
-
-	/**
-	 * @param user the user to set
-	 */
-	public void setUser(String user) {
+	public Users(@NotBlank @Size(min = 6, max = 40) String user, @NotBlank @Size(min = 6, max = 40) String pass,
+			@NotBlank String firstName, @NotBlank String lastName, @NotBlank Position pos,
+			@NotBlank @Digits(integer = 10, fraction = 2) double salary, @Email @NotBlank String email,
+			@NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr, @NotBlank String city,
+			@NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip, Set<Tasks> taskSet,
+			Set<Roles> roles, List<Order> orders) {
 		this.user = user;
-	}
-
-	/**
-	 * @return the pass
-	 */
-	public String getPass() {
-		return pass;
-	}
-
-	/**
-	 * @param pass the pass to set
-	 */
-	public void setPass(String pass) {
 		this.pass = pass;
-	}
-
-	/**
-	 * @return the firstName
-	 */
-	public String getFirstName() {
-		return firstName;
-	}
-
-	/**
-	 * @param firstName the firstName to set
-	 */
-	public void setFirstName(String firstName) {
 		this.firstName = firstName;
-	}
-
-	/**
-	 * @return the lastName
-	 */
-	public String getLastName() {
-		return lastName;
-	}
-
-	/**
-	 * @param lastName the lastName to set
-	 */
-	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	/**
-	 * @return the salary
-	 */
-	public double getSalary() {
-		return salary;
-	}
-
-	/**
-	 * @param salary the salary to set
-	 */
-	public void setSalary(double salary) {
+		this.pos = pos;
 		this.salary = salary;
-	}
-
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-		return email;
-	}
-
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	/**
-	 * @return the phone
-	 */
-	public String getPhone() {
-		return phone;
-	}
-
-	/**
-	 * @param phone the phone to set
-	 */
-	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	/**
-	 * @return the socialSecurityNumber
-	 */
-	public String getSocialSecurityNumber() {
-		return socialSecurityNumber;
-	}
-
-	/**
-	 * @param socialSecurityNumber the socialSecurityNumber to set
-	 */
-	public void setSocialSecurityNumber(String socialSecurityNumber) {
-		this.socialSecurityNumber = socialSecurityNumber;
-	}
-
-	/**
-	 * @return the addr
-	 */
-	public String getAddr() {
-		return addr;
-	}
-
-	/**
-	 * @param addr the addr to set
-	 */
-	public void setAddr(String addr) {
 		this.addr = addr;
-	}
-
-	/**
-	 * @return the city
-	 */
-	public String getCity() {
-		return city;
-	}
-
-	/**
-	 * @param city the city to set
-	 */
-	public void setCity(String city) {
 		this.city = city;
-	}
-
-	/**
-	 * @return the state
-	 */
-	public StateCodes getState() {
-		return state;
-	}
-
-	/**
-	 * @param state the state to set
-	 */
-	public void setState(StateCodes state) {
 		this.state = state;
-	}
-
-	/**
-	 * @return the zip
-	 */
-	public String getZip() {
-		return zip;
-	}
-
-	/**
-	 * @param zip the zip to set
-	 */
-	public void setZip(String zip) {
 		this.zip = zip;
-	}
-
-	/**
-	 * @return the taskSet
-	 */
-	public Set<Tasks> getTaskSet() {
-		return taskSet;
-	}
-
-	/**
-	 * @param taskSet the taskSet to set
-	 */
-	public void setTaskSet(Set<Tasks> taskSet) {
 		this.taskSet = taskSet;
-	}
-
-	/**
-	 * @return the roles
-	 */
-	public Set<Roles> getRoles() {
-		return roles;
-	}
-
-	/**
-	 * @param roles the roles to set
-	 */
-	public void setRoles(Set<Roles> roles) {
 		this.roles = roles;
+		this.orders = orders;
+	}
+
+	/**
+	 * @param id
+	 * @param user
+	 * @param pass
+	 * @param firstName
+	 * @param lastName
+	 * @param pos
+	 * @param salary
+	 * @param email
+	 * @param phone
+	 * @param addr
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param taskSet
+	 * @param roles
+	 * @param orders
+	 */
+	public Users(long id, @NotBlank @Size(min = 6, max = 40) String user,
+			@NotBlank @Size(min = 6, max = 40) String pass, @NotBlank String firstName, @NotBlank String lastName,
+			@NotBlank Position pos, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
+			@Email @NotBlank String email, @NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr,
+			@NotBlank String city, @NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip,
+			Set<Tasks> taskSet, Set<Roles> roles, List<Order> orders) {
+		this.id = id;
+		this.user = user;
+		this.pass = pass;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.pos = pos;
+		this.salary = salary;
+		this.email = email;
+		this.phone = phone;
+		this.addr = addr;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.taskSet = taskSet;
+		this.roles = roles;
+		this.orders = orders;
 	}
 
 	/**
@@ -354,10 +230,38 @@ public class Users implements Serializable {
 	}
 
 	/**
-	 * @param pos the pos to set
+	 * @return the id
 	 */
-	public void setPos(Position pos) {
-		this.pos = pos;
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * @return the user
+	 */
+	public String getUser() {
+		return user;
+	}
+
+	/**
+	 * @return the pass
+	 */
+	public String getPass() {
+		return pass;
+	}
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
 	}
 
 	/**
@@ -366,18 +270,186 @@ public class Users implements Serializable {
 	public Position getPos() {
 		return pos;
 	}
+
+	/**
+	 * @return the salary
+	 */
+	public double getSalary() {
+		return salary;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @return the addr
+	 */
+	public String getAddr() {
+		return addr;
+	}
+
+	/**
+	 * @return the city
+	 */
+	public String getCity() {
+		return city;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public StateCodes getState() {
+		return state;
+	}
+
+	/**
+	 * @return the zip
+	 */
+	public String getZip() {
+		return zip;
+	}
+
+	/**
+	 * @return the taskSet
+	 */
+	public Set<Tasks> getTaskSet() {
+		return taskSet;
+	}
+
+	/**
+	 * @return the roles
+	 */
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+
+	/**
+	 * @return the orders
+	 */
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	/**
+	 * @param pass the pass to set
+	 */
+	public void setPass(String pass) {
+		this.pass = pass;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * @param pos the pos to set
+	 */
+	public void setPos(Position pos) {
+		this.pos = pos;
+	}
+
+	/**
+	 * @param salary the salary to set
+	 */
+	public void setSalary(double salary) {
+		this.salary = salary;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * @param addr the addr to set
+	 */
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(StateCodes state) {
+		this.state = state;
+	}
+
+	/**
+	 * @param zip the zip to set
+	 */
+	public void setZip(String zip) {
+		this.zip = zip;
+	}
+
+	/**
+	 * @param taskSet the taskSet to set
+	 */
+	public void setTaskSet(Set<Tasks> taskSet) {
+		this.taskSet = taskSet;
+	}
+
+	/**
+	 * @param roles the roles to set
+	 */
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
+	}
+
+	/**
+	 * @param orders the orders to set
+	 */
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
