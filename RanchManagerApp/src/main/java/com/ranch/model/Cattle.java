@@ -9,8 +9,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -57,10 +55,6 @@ public class Cattle {
 	@NotBlank
 	private double price;
 	
-	@ManyToOne
-	@JoinColumn(name="food_type",unique=false,updatable=false,nullable=false)
-	private Feed fid;
-	
 	@Column(name="photoUrl")
 	private String photoUrl;
 	
@@ -74,21 +68,20 @@ public class Cattle {
 	// Overloaded Constructor Minus Cattle Id Field
 	public Cattle(@NotBlank SexType sex, @NotBlank CattleTypes breed, @NotBlank Date bday, @NotBlank Date check,
 			@NotBlank @Digits(fraction = 0, integer = 8) int age,
-			@Digits(fraction = 2, integer = 8) @NotBlank double price, Feed fid, String photoUrl) {
+			@Digits(fraction = 2, integer = 8) @NotBlank double price, String photoUrl) {
 		this.sex = sex;
 		this.breed = breed;
 		this.bday = bday;
 		this.check = check;
 		this.age = age;
 		this.price = price;
-		this.fid = fid;
 		this.photoUrl = photoUrl;
 	}
 
 	/// Overloaded Constructor
 	public Cattle(long id, @NotBlank SexType sex, @NotBlank CattleTypes breed, @NotBlank Date bday,
 			@NotBlank Date check, @NotBlank @Digits(fraction = 0, integer = 8) int age,
-			@Digits(fraction = 2, integer = 8) @NotBlank double price, Feed fid, String photoUrl) {
+			@Digits(fraction = 2, integer = 8) @NotBlank double price, String photoUrl) {
 		this.id = id;
 		this.sex = sex;
 		this.breed = breed;
@@ -96,7 +89,6 @@ public class Cattle {
 		this.check = check;
 		this.age = age;
 		this.price = price;
-		this.fid = fid;
 		this.photoUrl = photoUrl;
 	}
 	
@@ -151,13 +143,6 @@ public class Cattle {
 	 */
 	public double getPrice() {
 		return price;
-	}
-
-	/**
-	 * @return the feed id
-	 */
-	public Feed getFid() {
-		return fid;
 	}
 
 	/**
@@ -218,13 +203,6 @@ public class Cattle {
 	 */
 	public void setPrice(double price) {
 		this.price = price;
-	}
-
-	/**
-	 * @param fid the feed id to set
-	 */
-	public void setFid(Feed fid) {
-		this.fid = fid;
 	}
 
 	/**

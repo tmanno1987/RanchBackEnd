@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -92,6 +93,10 @@ public class Users implements Serializable {
 	@Column(name="zip_code", nullable=false)
 	@NotBlank @Size(min=5, max=5)
 	private String zip;
+	
+	@Column(name="picture", nullable=true, updatable=true)
+	@Lob
+	private byte[] picData;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="Progress", joinColumns= @JoinColumn(name="user_id"), inverseJoinColumns= @JoinColumn(name="task_id"))
@@ -217,6 +222,50 @@ public class Users implements Serializable {
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
+		this.taskSet = taskSet;
+		this.roles = roles;
+		this.orders = orders;
+	}
+
+	/**
+	 * @param id
+	 * @param user
+	 * @param pass
+	 * @param firstName
+	 * @param lastName
+	 * @param pos
+	 * @param salary
+	 * @param email
+	 * @param phone
+	 * @param addr
+	 * @param city
+	 * @param state
+	 * @param zip
+	 * @param picData
+	 * @param taskSet
+	 * @param roles
+	 * @param orders
+	 */
+	public Users(long id, @NotBlank @Size(min = 6, max = 40) String user,
+			@NotBlank @Size(min = 6, max = 40) String pass, @NotBlank String firstName, @NotBlank String lastName,
+			@NotBlank Position pos, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
+			@Email @NotBlank String email, @NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr,
+			@NotBlank String city, @NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip,
+			byte[] picData, Set<Tasks> taskSet, Set<Roles> roles, List<Order> orders) {
+		this.id = id;
+		this.user = user;
+		this.pass = pass;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.pos = pos;
+		this.salary = salary;
+		this.email = email;
+		this.phone = phone;
+		this.addr = addr;
+		this.city = city;
+		this.state = state;
+		this.zip = zip;
+		this.picData = picData;
 		this.taskSet = taskSet;
 		this.roles = roles;
 		this.orders = orders;
@@ -451,5 +500,19 @@ public class Users implements Serializable {
 	 */
 	public void setOrders(List<Order> orders) {
 		this.orders = orders;
+	}
+
+	/**
+	 * @return the picData
+	 */
+	public byte[] getPicData() {
+		return picData;
+	}
+
+	/**
+	 * @param picData the picData to set
+	 */
+	public void setPicData(byte[] picData) {
+		this.picData = picData;
 	}
 }
