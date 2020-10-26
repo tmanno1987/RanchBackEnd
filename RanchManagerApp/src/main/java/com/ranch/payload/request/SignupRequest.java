@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.ranch.model.enums.Position;
+import com.ranch.model.UserCategory;
 import com.ranch.model.enums.StateCodes;
 
 public class SignupRequest {
@@ -25,7 +25,7 @@ public class SignupRequest {
 	private String email;
 	
 	@NotBlank
-	private Position position;
+	private UserCategory position;
 	
 	@NotBlank
 	private String firstName;
@@ -101,14 +101,14 @@ public class SignupRequest {
 	/**
 	 * @return the position
 	 */
-	public Position getPosition() {
+	public UserCategory getPosition() {
 		return position;
 	}
 
 	/**
 	 * @param position the position to set
 	 */
-	public void setPosition(Position position) {
+	public void setPosition(UserCategory position) {
 		this.position = position;
 	}
 

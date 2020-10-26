@@ -33,7 +33,7 @@ public class StripeService {
 	public Charge charge(ChargeRequest creq) throws Exception {
 		Map<String, Object> chargeParams = new HashMap<String, Object>();
 		chargeParams.put("amount", creq.getAmount());
-		chargeParams.put("currency", creq.setCurrency("USD").getCurrency());
+		chargeParams.put("currency", creq.getCurrency());
 		chargeParams.put("source", creq.getStripeToken());
 		chargeParams.put("description", creq.getDescription());
 		return Charge.create(chargeParams);

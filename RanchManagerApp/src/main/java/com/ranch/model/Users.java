@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
@@ -25,7 +26,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import com.ranch.model.enums.Position;
 import com.ranch.model.enums.StateCodes;
 
 @Entity
@@ -59,9 +59,9 @@ public class Users implements Serializable {
 	private String lastName;
 	
 	@NotBlank
-	@Column(name="position")
-	@Enumerated(EnumType.STRING)
-	private Position pos;
+	@ManyToOne
+	@JoinColumn(name="category_name", nullable=false)
+	private UserCategory category;
 	
 	@NotBlank
 	@Digits(integer=10,fraction=2)
@@ -127,7 +127,7 @@ public class Users implements Serializable {
 	 * @param zip
 	 */
 	public Users(@NotBlank @Size(min = 6, max = 40) String user, @NotBlank @Size(min = 6, max = 40) String pass,
-			@NotBlank String firstName, @NotBlank String lastName, @NotBlank Position pos,
+			@NotBlank String firstName, @NotBlank String lastName, @NotBlank UserCategory pos,
 			@NotBlank @Digits(integer = 10, fraction = 2) double salary, @Email @NotBlank String email,
 			@NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr, @NotBlank String city,
 			@NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip) {
@@ -135,7 +135,7 @@ public class Users implements Serializable {
 		this.pass = pass;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.pos = pos;
+		this.category = pos;
 		this.salary = salary;
 		this.email = email;
 		this.phone = phone;
@@ -163,7 +163,7 @@ public class Users implements Serializable {
 	 * @param orders
 	 */
 	public Users(@NotBlank @Size(min = 6, max = 40) String user, @NotBlank @Size(min = 6, max = 40) String pass,
-			@NotBlank String firstName, @NotBlank String lastName, @NotBlank Position pos,
+			@NotBlank String firstName, @NotBlank String lastName, @NotBlank UserCategory pos,
 			@NotBlank @Digits(integer = 10, fraction = 2) double salary, @Email @NotBlank String email,
 			@NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr, @NotBlank String city,
 			@NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip, Set<Tasks> taskSet,
@@ -172,7 +172,7 @@ public class Users implements Serializable {
 		this.pass = pass;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.pos = pos;
+		this.category = pos;
 		this.salary = salary;
 		this.email = email;
 		this.phone = phone;
@@ -205,7 +205,7 @@ public class Users implements Serializable {
 	 */
 	public Users(long id, @NotBlank @Size(min = 6, max = 40) String user,
 			@NotBlank @Size(min = 6, max = 40) String pass, @NotBlank String firstName, @NotBlank String lastName,
-			@NotBlank Position pos, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
+			@NotBlank UserCategory pos, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
 			@Email @NotBlank String email, @NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr,
 			@NotBlank String city, @NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip,
 			Set<Tasks> taskSet, Set<Roles> roles, List<Order> orders) {
@@ -214,7 +214,7 @@ public class Users implements Serializable {
 		this.pass = pass;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.pos = pos;
+		this.category = pos;
 		this.salary = salary;
 		this.email = email;
 		this.phone = phone;
@@ -248,7 +248,7 @@ public class Users implements Serializable {
 	 */
 	public Users(long id, @NotBlank @Size(min = 6, max = 40) String user,
 			@NotBlank @Size(min = 6, max = 40) String pass, @NotBlank String firstName, @NotBlank String lastName,
-			@NotBlank Position pos, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
+			@NotBlank UserCategory category, @NotBlank @Digits(integer = 10, fraction = 2) double salary,
 			@Email @NotBlank String email, @NotBlank @Size(min = 10, max = 13) String phone, @NotBlank String addr,
 			@NotBlank String city, @NotBlank StateCodes state, @NotBlank @Size(min = 5, max = 5) String zip,
 			byte[] picData, Set<Tasks> taskSet, Set<Roles> roles, List<Order> orders) {
@@ -257,7 +257,7 @@ public class Users implements Serializable {
 		this.pass = pass;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.pos = pos;
+		this.category = category;
 		this.salary = salary;
 		this.email = email;
 		this.phone = phone;
@@ -316,8 +316,8 @@ public class Users implements Serializable {
 	/**
 	 * @return the pos
 	 */
-	public Position getPos() {
-		return pos;
+	public UserCategory getPos() {
+		return category;
 	}
 
 	/**
@@ -428,8 +428,8 @@ public class Users implements Serializable {
 	/**
 	 * @param pos the pos to set
 	 */
-	public void setPos(Position pos) {
-		this.pos = pos;
+	public void setPos(UserCategory pos) {
+		this.category = pos;
 	}
 
 	/**

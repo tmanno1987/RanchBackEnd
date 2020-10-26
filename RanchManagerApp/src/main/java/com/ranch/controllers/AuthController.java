@@ -74,11 +74,6 @@ public class AuthController {
 			return ResponseEntity.badRequest().body(new MessageResponse("Error: Email already exists.."));
 		}
 		
-		/**
-		 * @param user  @param pass  @param firstName  @param lastName
-		 * @param pos  @param salary  @param email  @param phone
-		 * @param addr  @param city  @param state  @param zip
-		 */
 		Users user = new Users(sr.getUsername(), encoder.encode(sr.getPassword()), sr.getFirstName(),
 				sr.getLastName(), sr.getPosition(), sr.getSalary(), sr.getEmail(), sr.getPhone(),
 				sr.getAddress(), sr.getCity(), sr.getState(), sr.getZip());

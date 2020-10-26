@@ -18,6 +18,10 @@ public interface EmployeeRepo extends JpaRepository<Users, Long> {
 	
 	Page<Users> findByUserContaining(@RequestParam("user") String user, Pageable pageable);
 	
+	Page<Users> findByCategoryName(@RequestParam(name="name") String name, Pageable pageable);
+	
+	Page<Users> findByCategoryId(@RequestParam(name="id") long id, Pageable pageable);
+	
 	// used for the security section
 	Boolean existsByUser(String username);
 	Boolean existsByEmail(String email);

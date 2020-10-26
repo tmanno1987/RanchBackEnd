@@ -6,12 +6,13 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+//import javax.persistence.EnumType;
+//import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
-import com.ranch.model.enums.TaskType;
+//import com.ranch.model.enums.TaskType;
 
 @Entity
 @Table(name="Task")
@@ -45,10 +46,14 @@ public class Tasks {
 	@Temporal(TemporalType.DATE)
 	private Date lastUpdate;
 	
-	@Column(name="task_type")
-	@NotBlank
-	@Enumerated(EnumType.STRING)
-	private TaskType taskType;
+	@ManyToOne
+	@JoinColumn(name="category_name", nullable=false)
+	private TaskCategory category;
+	
+//	@Column(name="task_type")
+//	@NotBlank
+//	@Enumerated(EnumType.STRING)
+//	private TaskType taskType;
 	
 	@Column(name="description")
 	@NotBlank
@@ -69,18 +74,18 @@ public class Tasks {
 	 * @param active
 	 * @param avgTime
 	 * @param lastUpdate
-	 * @param taskType
+	 * @param category
 	 * @param desc
 	 * @param compTask
 	 * @param photoUrl
 	 */
 	public Tasks(@NotBlank String name, @NotBlank boolean active, @NotBlank int avgTime, @NotBlank Date lastUpdate,
-			@NotBlank TaskType taskType, @NotBlank String desc, List<Users> compTask, String photoUrl) {
+			TaskCategory category, @NotBlank String desc, List<Users> compTask, String photoUrl) {
 		this.name = name;
 		this.active = active;
 		this.avgTime = avgTime;
 		this.lastUpdate = lastUpdate;
-		this.taskType = taskType;
+		this.category = category;
 		this.desc = desc;
 		this.compTask = compTask;
 		this.photoUrl = photoUrl;
@@ -92,20 +97,20 @@ public class Tasks {
 	 * @param active
 	 * @param avgTime
 	 * @param lastUpdate
-	 * @param taskType
+	 * @param category
 	 * @param desc
 	 * @param compTask
 	 * @param photoUrl
 	 */
 	public Tasks(long tid, @NotBlank String name, @NotBlank boolean active, @NotBlank int avgTime,
-			@NotBlank Date lastUpdate, @NotBlank TaskType taskType, @NotBlank String desc, List<Users> compTask,
+			@NotBlank Date lastUpdate, TaskCategory category, @NotBlank String desc, List<Users> compTask,
 			String photoUrl) {
 		this.tid = tid;
 		this.name = name;
 		this.active = active;
 		this.avgTime = avgTime;
 		this.lastUpdate = lastUpdate;
-		this.taskType = taskType;
+		this.category = category;
 		this.desc = desc;
 		this.compTask = compTask;
 		this.photoUrl = photoUrl;
@@ -144,13 +149,6 @@ public class Tasks {
 	 */
 	public Date getLastUpdate() {
 		return lastUpdate;
-	}
-
-	/**
-	 * @return the taskType
-	 */
-	public TaskType getTaskType() {
-		return taskType;
 	}
 
 	/**
@@ -210,13 +208,6 @@ public class Tasks {
 	}
 
 	/**
-	 * @param taskType the taskType to set
-	 */
-	public void setTaskType(TaskType taskType) {
-		this.taskType = taskType;
-	}
-
-	/**
 	 * @param desc the desc to set
 	 */
 	public void setDesc(String desc) {
@@ -235,5 +226,19 @@ public class Tasks {
 	 */
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
+	}
+
+	/**
+	 * @return the category
+	 */
+	public TaskCategory getCategory() {
+		return category;
+	}
+
+	/**
+	 * @param category the category to set
+	 */
+	public void setCategory(TaskCategory category) {
+		this.category = category;
 	}
 }
